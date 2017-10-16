@@ -9,17 +9,17 @@ from warnings import warn
 
 try:
     import pygame
-    from visualize import BasicTable, SimpleTable, Ball, Wall, Occlusion, \
+    from .visualize import BasicTable, SimpleTable, Ball, Wall, Occlusion, \
         AbnormWall, Goal, Paddle
 except ImportError:
     warn("No pygame detected; display and image functionality will be limited",
          ImportWarning)
-    from tables import BasicTable, SimpleTable
-    from objects import *
+    from .tables import BasicTable, SimpleTable
+    from .objects import *
 
-from tables import NoisyTable, make_noisy
-from path_maker import PathMaker, load_path_maker, PseudoPathMaker
-from trials import SimpleTrial, PongTrial, RedGreenTrial, load_trial, \
+from .tables import NoisyTable, make_noisy
+from .path_maker import PathMaker, load_path_maker, PseudoPathMaker
+from .trials import SimpleTrial, PongTrial, RedGreenTrial, load_trial, \
     load_trial_from_json, load_json
 
 import objects

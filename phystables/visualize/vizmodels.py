@@ -5,10 +5,10 @@ def psdraw_density(self, rp_wid = 5, greyscale = (0,255), gamadj = .2):
     ptharray = np.zeros(table.dim)
 
     def singpth(i):
-        print i
+        print (i)
         n = make_noisy(self.tab,self.kapv,self.kapb,self.kapm,self.perr)
         r = n.simulate(self.maxtime, return_path = True, rp_wid = rp_wid)
-        print 'd',i
+        print ('d',i)
         return r[1]
     sims = map(singpth, range(self.nsims))
 
@@ -32,7 +32,7 @@ def psdraw_density(self, rp_wid = 5, greyscale = (0,255), gamadj = .2):
 
     print ('initial draw')
     for i in range(table.dim[0]):
-        print i
+        print (i)
         for j in range(table.dim[1]):
             if paths[i,j] > 0:
                 tmpcol = int(greyscale[1] - gsadj * paths[i,j] * gamadj)

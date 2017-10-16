@@ -22,7 +22,7 @@ setup(name = 'phystables',
       author_email = 'k2smith@mit.edu',
       url = 'https://github.com/kasmith/phystables',
       packages = ['phystables','phystables.objects','phystables.utils','phystables.constants','phystables.creator',
-                  'phystables.visualize','phystables.models'],
+                  'phystables.visualize','phystables.models', 'phystables.tables'],
       requires=['pymunk (>=5.0)', 'numpy', 'scipy', 'OptimTools'],
       data_files=[('phystables/creator/icons', icons)],
       cmdclass={'install_data': wx_smart_install_data}
