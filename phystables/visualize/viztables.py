@@ -7,7 +7,7 @@
 from ..tables import BasicTable, SimpleTable
 from ..constants import *
 from ..objects import *
-from .__init__ import screenPause
+from .__init__ import screen_pause
 import pygame as pg
 from pygame.constants import *
 import numpy as np
@@ -112,7 +112,7 @@ def btstep(self, t=1 / 50., maxtime=None):
             self.on_step()
             self.sp.step(self.basicts)
             self.tm += self.basicts
-            e = self.checkEnd()
+            e = self.check_end()
             if e is not None:
                 return e
             if maxtime and self.tm > maxtime:
@@ -187,7 +187,7 @@ def btdemonstrate(self, screen=None, timesteps=1. / 50, retpath=False, onclick=N
     if retpath:
         rets = [[stp, self.balls.getpos()[0], self.balls.getpos()[1],
                  self.balls.getvel()[0], self.balls.getvel()[1]]]
-    screenPause(0.)
+    screen_pause(0.)
     clk = pg.time.Clock()
     running = True
     while running:

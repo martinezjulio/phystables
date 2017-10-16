@@ -13,7 +13,7 @@ from .constants import *
 from .trials import *
 from .tables import SimpleTable, NoisyTable
 from multiprocessing import Pool, cpu_count
-from OptimTools import async_map, apply_async
+from OptimTools import async_map, async_apply
 import random
 import copy
 import os
@@ -38,8 +38,8 @@ def make_file_name(trnm,kapv,kapb,kapm,perr,nsims,path = '.'):
 def load_paths(trial,kapv,kapb,kapm,perr,nsims=200,path = '.',verbose=False):
     trpth = make_file_name(trial.name,kapv,kapb,kapm,perr,nsims,path)
     if not os.path.exists(trpth):
-        print 'Nothing existing for trial ' + trial.name +'; making now'
-        print 'Saving into: ' + trpth
+        print ('Nothing existing for trial ' + trial.name +'; making now')
+        print ('Saving into: ' + trpth)
         trdir = os.path.dirname(trpth)
         if not os.path.exists(trdir): os.makedirs(trdir)
         pm = PathMaker(trial,kapv,kapb,kapm,perr,nsims,verbose=verbose)
@@ -69,18 +69,19 @@ class Path(object):
         maxpt = max(map(max,self.p))
         minpt = min(map(min,self.p))
         self.len = len(self.p)
-        if maxpt > 256*256-1 or minpt < 0: raise Exception('Path out of bounds - not compressible')
-        if max(self.b) > 255: raise Exception('Too many bounces to compress')
+        if maxpt > 256*256-1 or minpt < 0: raise RuntimeError('Path out of bounds - not compressible')
+        if max(self.b) > 255: raise RuntimeError('Too many bounces to compress')
         self.maxbounce = max(self.b)
         self.ts = ts
         self.tl = tl
         self.initt = tab.tm
         del ntab
         if verbose:
-            print "Done with path; ", tab.tm, "; redos:",nbads
+            print ("Done with path; ", tab.tm, "; redos:",nbads)
 
     def compress(self):
-        if self.p is None: raise Exception('Already compressed!')
+        if self.p is None:
+            raise RuntimeError('Already compressed!')
         st = ""
         for p in self.p: st += to_bin(p[0]) + to_bin(p[1])
         self.comp = st
@@ -91,7 +92,8 @@ class Path(object):
         self.b = None
 
     def decompress(self):
-        if self.comp is None: raise Exception('Already uncompressed')
+        if self.comp is None:
+            raise RuntimeError('Already uncompressed')
         self.p = []
         i = 0
         while i < len(self.comp):
@@ -99,12 +101,14 @@ class Path(object):
             y = from_bin(self.comp[(i+2):(i+4)])
             self.p.append( (x,y) )
             i += 4
-        if len(self.p) != self.len: raise Exception('Length mismatch - decompression error!')
+        if len(self.p) != self.len:
+            raise RuntimeError('Length mismatch - decompression error!')
         self.comp = None
         self.b = []
         for i in range(len(self.compb)):
             self.b.append(ord(self.compb[i]))
-        if len(self.b) != self.len: raise Exception('Length mismatch (bounce) - decompression error!')
+        if len(self.b) != self.len:
+            raise RuntimeError('Length mismatch (bounce) - decompression error!')
         self.compb = None
 
     def getpos(self,t):
@@ -185,7 +189,7 @@ class PathMaker(object):
                     p.compress()
             self.compressed = True
         else:
-            print "Paths already compresseed"
+            print ("Paths already compresseed")
 
     def decompress_paths(self):
         if self.compressed:
@@ -194,7 +198,7 @@ class PathMaker(object):
                     p.decompress()
             self.compressed = False
         else:
-            print "Paths already decompressed"
+            print ("Paths already decompressed")
 
     def save(self, flnm, docompress=True):
         cp = copy.deepcopy(self)

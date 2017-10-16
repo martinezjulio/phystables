@@ -13,7 +13,8 @@ from __future__ import division, print_function
 import sys
 import os
 import warnings
-from tables import *
+from .tables import *
+from .constants import *
 import cPickle as pickle
 from math import sqrt
 import json

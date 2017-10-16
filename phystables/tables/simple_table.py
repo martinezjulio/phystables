@@ -11,7 +11,7 @@ Changes from BasicTable:
 
 from __future__ import division, print_function
 from basic_table import *
-from .objects import *
+from ..objects import *
 
 
 class SimpleTable(BasicTable):
@@ -29,7 +29,7 @@ class SimpleTable(BasicTable):
             pmsp = self.sp
         if self.balls:
             if dispwarn:
-                print "Note: only one ball allowed - overwriting"
+                print ("Note: only one ball allowed - overwriting")
             self.sp.remove(self.balls.circle)
             self.sp.remove(self.balls.body)
         if rad is None:
@@ -53,23 +53,23 @@ class SimpleTable(BasicTable):
             self.balls.bounces += 1
 
     def coll_ball_wall(self, arbiter):
-        map(self.addBounce, arbiter.shapes)
+        map(self.add_bounce, arbiter.shapes)
         if len(arbiter.shapes) > 2:
-            print "Shouldn't have multi-collision... may be errors"
-        ss = [self.findWallByShape(s) for s in arbiter.shapes]
+            print ("Shouldn't have multi-collision... may be errors")
+        ss = [self.find_wall_by_shape(s) for s in arbiter.shapes]
         wl = [w for w in ss if w is not None][0]
         self.on_wallhit(self.balls, w)
 
     def coll_ball_pad(self, arbiter):
-        map(self.addBounce, arbiter.shapes)
+        map(self.add_bounce, arbiter.shapes)
         if len(arbiter.shapes) > 2:
-            print "Shouldn't have multi-collision... may be errors"
+            print ("Shouldn't have multi-collision... may be errors")
         self.padhit = True
         self.on_paddlehit(self.balls, self.paddle)
 
     def coll_ball_ball(self, arbiter):
-        print arbiter.shapes
-        raise Exception('Found two balls colliding when at most one exists')
+        print (arbiter.shapes)
+        raise RuntimeError('Found two balls colliding when at most one exists')
         #self.on_ballhit([b for b in self.balls if b.circle in arbiter.shapes])
 
     def mostly_occ(self): return super(SimpleTable, self).mostly_occ(self.balls)

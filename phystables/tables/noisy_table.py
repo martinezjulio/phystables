@@ -80,7 +80,7 @@ class NoisyTable(SimpleTable):
                 elif np.pi * 1.5 < vang < np.pi * 2.:
                     bounds = (np.pi * 1.5, np.pi * 2.)
                 else:
-                    raise Exception("Angle outside of 0, 2pi")
+                    raise RuntimeError("Angle outside of 0, 2pi")
                 while not (bounds[0] < newang < bounds[1]):
                     newang = np.random.vonmises(vang, kappa) % (2 * np.pi)
             ball.setvel((vmag * np.cos(newang), vmag * np.sin(newang)))
@@ -88,7 +88,7 @@ class NoisyTable(SimpleTable):
     # Special case of wall collision -- doesn't allow ball to reverse course
     def wall_collide(self, ball, wall, kappa=None):
         if type(wall) == AbnormWall:
-            print "Cannot do special collision with abnormal walls (yet) - doing normal jitter"
+            print ("Cannot do special collision with abnormal walls (yet) - doing normal jitter")
             self.jitter_ball(ball, kappa)
         elif kappa:
             v = ball.getvel()
@@ -103,7 +103,7 @@ class NoisyTable(SimpleTable):
             elif np.pi * 1.5 < vang < np.pi * 2.:
                 bounds = (np.pi * 1.5, np.pi * 2.)
             else:
-                raise Exception("Angle outside of 0, 2pi")
+                raise RuntimeError("Angle outside of 0, 2pi")
             newang = np.random.vonmises(vang, kappa) % (2 * np.pi)
             while not (bounds[0] < newang < bounds[1]):
                 newang = np.random.vonmises(vang, kappa) % (2 * np.pi)
@@ -208,14 +208,14 @@ def make_noisy(table, kapv=KAPV_DEF, kapb=KAPB_DEF, kapm=KAPM_DEF,
     ntab.set_timestep(table.basicts)
     for w in table.walls:
         if isinstance(w, AbnormWall):
-            ntab.addAbnormWall(w.poly.get_vertices(), w.col, w.poly.elasticity)
+            ntab.add_abnorm_wall(w.poly.get_vertices(), w.col, w.poly.elasticity)
         elif isinstance(w, Wall):
-            ntab.addWall(w.r.topleft, w.r.bottomright, w.col, w.poly.elasticity)
+            ntab.add_wall(w.r.topleft, w.r.bottomright, w.col, w.poly.elasticity)
 
     for o in table.occludes:
-        ntab.addOcc(o.r.topleft, o.r.bottomright, o.col)
+        ntab.add_occ(o.r.topleft, o.r.bottomright, o.col)
     for g in table.goals:
-        ntab.addGoal(g.r.topleft, g.r.bottomright, g.ret, g.col)
+        ntab.add_goal(g.r.topleft, g.r.bottomright, g.ret, g.col)
     # Turn paddle into a special goal that returns paddlereturn (SUCCESS by default)
     if table.paddle and paddlereturn:
         if straddlepaddle:
@@ -234,15 +234,15 @@ def make_noisy(table, kapv=KAPV_DEF, kapb=KAPB_DEF, kapm=KAPM_DEF,
             else:
                 ul = (e1[0] - table.paddle.wid, e1[1])
                 lr = (e2[0] + table.paddle.wid, e2[1])
-        ntab.addGoal(ul, lr, paddlereturn, LIGHTGREY)
+        ntab.add_goal(ul, lr, paddlereturn, LIGHTGREY)
 
     if sttype:
         if table.balls:
-            ntab.addBall(table.balls.getpos(), table.balls.getvel(),
+            ntab.add_ball(table.balls.getpos(), table.balls.getvel(),
                          table.balls.getrad(), color=table.balls.col)
     else:
         for b in table.balls:
-            ntab.addBall(b.getpos(), b.getvel(), b.getrad(), color=b.col)
+            ntab.add_ball(b.getpos(), b.getvel(), b.getrad(), color=b.col)
 
     ntab.tm = table.tm
 

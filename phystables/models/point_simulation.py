@@ -1,11 +1,12 @@
 from __future__ import division
-from ..noisyTable import *
-from ..utils import async_map
+from ..tables import NoisyTable, make_noisy
+from ..constants import *
+from OptimTools import async_map
 from multiprocessing import cpu_count
 import numpy as np
 
 class PointSimulation(object):
-    
+
     def __init__(self,table, kapv = KAPV_DEF, kapb = KAPB_DEF, kapm = KAPM_DEF, perr = PERR_DEF, ensure_end = False, nsims = 200, maxtime = 50., cpus = cpu_count(), timeres = 0.05):
         self.tab = table
         self.kapv = kapv
@@ -15,17 +16,17 @@ class PointSimulation(object):
         self.maxtime = maxtime
         self.nsims = nsims
         self.ts = timeres
-        
+
         self.outcomes = None
         self.endpts = None
         self.bounces = None
         self.run = False
         self.enend = ensure_end
-        
+
         self.ucpus = cpus
         self.badsims = 0
-        
-    
+
+
     def singleSim(self, i):
         n = makeNoisy(self.tab,self.kapv,self.kapb,self.kapm,self.perr)
         n.set_timestep(self.ts)
@@ -41,28 +42,28 @@ class PointSimulation(object):
                 self.badsims += 1
                 return(self.singleSim(i))
         return [r, rp, nb, n.tm]
-    
+
     def runSimulation(self):
 
         if self.ucpus == 1:
             ret = map(self.singleSim, range(self.nsims))
         else:
             ret = async_map(self.singleSim,range(self.nsims), self.ucpus)
-        
+
         self.outcomes = [r[0] for r in ret]
         self.endpts = [r[1] for r in ret]
         self.bounces = [r[2] for r in ret]
         self.tsims = [r[3] for r in ret]
         self.run = True
-        
+
         return [self.outcomes, self.endpts, self.bounces, self.tsims]
-        
+
     def getOutcomes(self):
         if not self.run: raise Exception('Cannot get simulation outcome without running simulations first')
         retdict = dict([(r,0) for r in self.tab.goalrettypes])
         for o in self.outcomes:
             retdict[o] += 1
-        
+
         return retdict
 
     def getEndpoints(self, xonly = False, yonly = False):
@@ -96,4 +97,3 @@ class PointSimulation(object):
             self.bounces[idx] = ret[i][2]
             self.tsims[idx] = ret[i][3]
         self.replaceOutcomes(badoutcomes,printout)
-

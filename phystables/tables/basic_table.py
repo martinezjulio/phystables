@@ -205,7 +205,7 @@ class BasicTable(object):
                                                     self.dim[1] + 1)
                 self.sp.add(self.left)
             else:
-                print "Warning: Inappropriate closed_ends:", ce
+                print ("Warning: Inappropriate closed_ends:", ce)
 
         # Other characteristics
         self.tm = 0.
@@ -228,15 +228,15 @@ class BasicTable(object):
     def coll_ball_wall(self, arbiter):
         map(self.add_bounce, arbiter.shapes)
         if len(arbiter.shapes) > 2:
-            print "Shouldn't have multi-collision... may be errors"
-        ss = [self.findWallByShape(s) for s in arbiter.shapes]
+            print ("Shouldn't have multi-collision... may be errors")
+        ss = [self.find_wall_by_shape(s) for s in arbiter.shapes]
         wl = [w for w in ss if w is not None][0]
         self.on_wallhit([b for b in self.balls if b.circle in arbiter.shapes][0], w)
 
     def coll_ball_pad(self, arbiter):
         map(self.add_bounce, arbiter.shapes)
         if len(arbiter.shapes) > 2:
-            print "Shouldn't have multi-collision... may be errors"
+            print ("Shouldn't have multi-collision... may be errors")
         self.padhit = True
         self.on_paddlehit([b for b in self.balls if b.circle in arbiter.shapes][0], self.paddle)
 

@@ -7,7 +7,7 @@ import sys
 import os
 import time
 import copy
-from .objects import *
+from ..objects import *
 
 __all__ = ['rect_diff', 'break_rect', 'unique_occs']
 

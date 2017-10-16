@@ -8,7 +8,7 @@
 from warnings import warn
 
 try:
-    import pygame as pg
+    import pygame
     from visualize import BasicTable, SimpleTable, Ball, Wall, Occlusion, \
         AbnormWall, Goal, Paddle
 except ImportError:
@@ -18,7 +18,7 @@ except ImportError:
     from objects import *
 
 from tables import NoisyTable, make_noisy
-from pathMaker import PathMaker, load_path_maker, PseudoPathMaker
+from path_maker import PathMaker, load_path_maker, PseudoPathMaker
 from trials import SimpleTrial, PongTrial, RedGreenTrial, load_trial, \
     load_trial_from_json, load_json
 
@@ -29,6 +29,6 @@ import models
 
 __all__ = ['objects', 'SimpleTable', 'BasicTable', 'NoisyTable',
            'SimpleTrial', 'PongTrial', 'PathMaker', 'load_path_maker',
-           'RedGreenTrial', 'loadTrial', 'constants', 'make_noisy',
+           'RedGreenTrial', 'load_trial', 'constants', 'make_noisy',
            'utils', 'models', 'load_trial_from_json', 'load_json',
            'PseudoPathMaker']
