@@ -20,7 +20,7 @@ except ImportError:
 from .tables import NoisyTable, make_noisy
 from .path_maker import PathMaker, load_path_maker, PseudoPathMaker
 from .trials import SimpleTrial, PongTrial, RedGreenTrial, load_trial, \
-    load_trial_from_json, load_json
+    load_pickle, load_json
 
 import objects
 import constants
@@ -29,6 +29,5 @@ import models
 
 __all__ = ['objects', 'SimpleTable', 'BasicTable', 'NoisyTable',
            'SimpleTrial', 'PongTrial', 'PathMaker', 'load_path_maker',
-           'RedGreenTrial', 'load_trial', 'constants', 'make_noisy',
-           'utils', 'models', 'load_trial_from_json', 'load_json',
-           'PseudoPathMaker']
+           'RedGreenTrial', 'constants', 'make_noisy', 'load_trial',
+           'load_json', 'load_pickle', 'utils', 'models', 'PseudoPathMaker']

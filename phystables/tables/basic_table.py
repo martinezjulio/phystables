@@ -430,7 +430,7 @@ class BasicTable(object):
                 self.on_step()
                 self.sp.step(self.basicts)
                 self.tm += self.basicts
-                e = self.checkEnd()
+                e = self.check_end()
                 if e is not None:
                     return e
                 if maxtime and self.tm > maxtime:

@@ -19,6 +19,8 @@ import cPickle as pickle
 from math import sqrt
 import json
 
+__all__ = ['SimpleTrial', 'RedGreenTrial', 'PongTrial', 'load_trial',
+           'load_json', 'load_pickle']
 
 def _safe_listify(tolist):
     """Turns things into a list in a way that respects nesting"""
@@ -149,7 +151,7 @@ class SimpleTrial(object):
         except ImportError:
             tb = SimpleTable(self.dims, self.ce, self.dbr, self.dpl, True)
         if self.ball:
-            tb.addBall(self.ball[0], self.ball[1],
+            tb.add_ball(self.ball[0], self.ball[1],
                        self.ball[2], self.ball[3], self.ball[4])
         if self.paddle:
             if paddleasgoal:
@@ -157,32 +159,32 @@ class SimpleTrial(object):
                 p2 = self.paddle[1]
                 if p1[0] == p2[0]:
                     if paddleasgoal == 'bottom':
-                        tb.addGoal(p1, (p2[0], self.dims[1]),
+                        tb.add_goal(p1, (p2[0], self.dims[1]),
                                    self.paddle[4], LIGHTGREY)
                     else:
-                        tb.addGoal((p1[0], 0), p2, self.paddle[4], LIGHTGREY)
+                        tb.add_goal((p1[0], 0), p2, self.paddle[4], LIGHTGREY)
                 elif p1[1] == p2[1]:
                     if paddleasgoal == 'right':
-                        tb.addGoal(
+                        tb.add_goal(
                             p1, (self.dims[0], p2[1]), self.paddle[4],
                             LIGHTGREY)
                     else:
-                        tb.addGoal((0, p1[1]), p2, self.paddle[4], LIGHTGREY)
+                        tb.add_goal((0, p1[1]), p2, self.paddle[4], LIGHTGREY)
                 else:
                     raise Exception('Paddle must be vertical or horizontal')
             else:
-                tb.addPaddle(self.paddle[0], self.paddle[1], self.paddle[2],
+                tb.add_paddle(self.paddle[0], self.paddle[1], self.paddle[2],
                              self.paddle[3], self.paddle[4], True,
                              self.paddle[5], self.paddle[6], self.paddle[7],
                              self.paddle[8], False)
         for w in self.normwalls:
-            tb.addWall(w[0], w[1], w[2], w[3])
+            tb.add_wall(w[0], w[1], w[2], w[3])
         for w in self.abnormwalls:
-            tb.addAbnormWall(w[0], w[1], w[2])
+            tb.add_abnorm_wall(w[0], w[1], w[2])
         for g in self.goals:
-            tb.addGoal(g[0], g[1], g[2], g[3])
+            tb.add_goal(g[0], g[1], g[2], g[3])
         for o in self.occs:
-            tb.addOcc(o[0], o[1], o[2])
+            tb.add_occ(o[0], o[1], o[2])
         return tb
 
     def normalize_vel(self):
@@ -206,7 +208,7 @@ class SimpleTrial(object):
         """
         good = True
 
-        ctb = self.makeTable()
+        ctb = self.make_table()
 
         if self.paddle:
             pbox = ctb.paddle.getbound()
@@ -287,7 +289,7 @@ class SimpleTrial(object):
                                 "Paddle path intersects abnormal wall")
                             good = False
 
-        if ctb.mostlyOccAll():
+        if ctb.mostly_occ_all():
             good = False
             warnings.warn("Ball is mostly occluded at start")
 
@@ -304,13 +306,13 @@ class SimpleTrial(object):
                 if e:
                     running = False
 
-            if ctb.mostlyOccAll():
+            if ctb.mostly_occ_all():
                 good = False
                 warnings.warn("Ball is mostly occluded at end")
 
         return good
 
-    def save(self, flnm=None, fldir=None, askoverwrite=True):
+    def save_pickle(self, flnm=None, fldir=None, askoverwrite=True):
         if flnm is None:
             flnm = self.name + '.ptr'
         if fldir is not None:
@@ -326,7 +328,7 @@ class SimpleTrial(object):
 
         pickle.dump(self, open(flnm, 'wb'))
 
-    def jsonify(self, flnm=None, fldir=None, askoverwrite=True, pretty=False):
+    def save(self, flnm=None, fldir=None, askoverwrite=True, pretty=False):
         if flnm is None:
             flnm = self.name + '.json'
         if fldir is not None:
@@ -359,41 +361,6 @@ class SimpleTrial(object):
         ofl = open(flnm, 'w')
         ofl.write(jfl)
         ofl.close()
-
-
-def load_json(j, trialType='basic'):
-    trialType = trialType.lower()
-    assert trialType in ['basic', 'redgreen', 'pong'], "Invalid trial type"
-    if trialType == 'basic':
-        TrClass = SimpleTrial
-    elif trialType == 'redgreen':
-        TrClass = RedGreenTrial
-    elif trialType == 'pong':
-        TrClass = PongTrial
-    tr = TrClass(j['Name'], j['Dims'], j['ClosedEnds'],
-                 background_cl=j['BKColor'])
-    b = j['Ball']
-    if b:
-        tr.addBall(b[0], b[1], b[2], b[3], b[4])
-    for w in j['Walls']:
-        tr.addWall(w[0], w[1], w[2], w[3])
-    for o in j['Occluders']:
-        tr.addOcc(o[0], o[1], o[2])
-    for g in j['Goals']:
-        tr.addGoal(g[0], g[1], g[2], g[3])
-    for a in j['AbnormWalls']:
-        tr.addAbnormWall(a[0], a[1], a[2])
-    p = j['Paddle']
-    if p:
-        tr.addPaddle(j[0], j[1], j[2], j[3], j[4], j[5], j[6], j[7], j[8])
-    return tr
-
-
-def load_trial_from_json(jsonfl, trialType='basic'):
-    with open(jsonfl, 'rU') as jfl:
-        j = json.load(jfl)
-        tr = loadJSON(j, trialType)
-    return tr
 
 
 class PongTrial(SimpleTrial):
@@ -435,5 +402,32 @@ class RedGreenTrial(SimpleTrial):
             return (goal[0], goal[1], REDGOAL, RED)
 
 
-def load_trial(flnm):
+def load_json(j, trial_type=SimpleTrial):
+    assert issubclass(trial_type, SimpleTrial), ("Loaded trial_type must "
+                                                 "inherit from SimpleTrial")
+    tr = trial_type(j['Name'], j['Dims'], j['ClosedEnds'],
+                 background_cl=j['BKColor'])
+    b = j['Ball']
+    if b:
+        tr.add_ball(b[0], b[1], b[2], b[3], b[4])
+    for w in j['Walls']:
+        tr.add_wall(w[0], w[1], w[2], w[3])
+    for o in j['Occluders']:
+        tr.add_occ(o[0], o[1], o[2])
+    for g in j['Goals']:
+        tr.add_goal(g[0], g[1], g[2], g[3])
+    for a in j['AbnormWalls']:
+        tr.add_abnorm_wall(a[0], a[1], a[2])
+    p = j['Paddle']
+    if p:
+        tr.add_paddle(j[0], j[1], j[2], j[3], j[4], j[5], j[6], j[7], j[8])
+    return tr
+
+def load_trial(jsonfl, trialType=SimpleTrial):
+    with open(jsonfl, 'rU') as jfl:
+        j = json.load(jfl)
+        tr = load_json(j, trialType)
+    return tr
+
+def load_pickle(flnm):
     return pickle.load(open(flnm, 'rb'))
