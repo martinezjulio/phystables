@@ -1,5 +1,5 @@
 from __future__ import division
-from physicsTable.constants import *
+from phystables.constants import *
 import pymunk as pm
 from weakref import ref
 
