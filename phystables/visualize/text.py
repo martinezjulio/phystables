@@ -6,7 +6,7 @@ from __future__ import division
 import pygame as pg
 import time
 from pygame.locals import *
-from physicsTable.constants import LEFT, RIGHT, BOTTOM, TOP, CENTER
+from phystables.constants import LEFT, RIGHT, BOTTOM, TOP, CENTER
 
 pg.font.init()
 
@@ -23,14 +23,14 @@ def parseText(text,width,font = None, parser = ' '):
         font = FONT_L
     textList = text.split(parser)
     ret = []
-        
+
     # Iterate cutting lines until all text has been split
     while len(textList) != 0:
         # Ensure that at least one word fits within the line
         if font.size(textList[0])[0] > width:
             print("Error: Font size too large to render")
             return []
-         
+
         # Determine the longest list that will fit within the width
         for j in range(1,len(textList)+1):
             # Split if newline character is found
@@ -42,7 +42,7 @@ def parseText(text,width,font = None, parser = ' '):
                     ret.append(" ".join(textList[0:j-1]))
                     textList = textList[j:]
                 break
-                    
+
             line = " ".join(textList[0:j])
             junk = font.size(line)
             if font.size(line)[0] > width:
@@ -91,7 +91,7 @@ def writeInstructions(text,screen,font = FONT_VL,txtcol = pg.Color('Black'),bkco
     xwid = int(0.9 * sdim[0])
     ymid = int(sdim[1]/2)
     xmid = int(sdim[0]/2)
-    
+
     phrases = parseText(text,xwid,font)
     vheight = font.get_linesize()
     txtheight = vheight * len(phrases)

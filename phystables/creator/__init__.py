@@ -1,7 +1,7 @@
 # ---------------------------------------------------
-# physicsTable
+# phystables
 #
-# Written by Kevin A Smith (k2smith@ucsd.edu)
+# Written by Kevin A Smith (k2smith@mit.edu)
 #
 # ---------------------------------------------------
 

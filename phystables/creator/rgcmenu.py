@@ -1,7 +1,7 @@
 import os, sys
 import pygame as pg
 from pygame.constants import *
-from physicsTable.constants import *
+from phystables.constants import *
 
 # Load the menu icons
 icondir = os.path.join(os.path.dirname(os.path.realpath(__file__)),'icons')
