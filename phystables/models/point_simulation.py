@@ -50,9 +50,9 @@ class PointSimulation(object):
     def run_simulation(self):
 
         if self.ucpus == 1:
-            ret = map(self.singleSim, range(self.nsims))
+            ret = map(self.single_sim, range(self.nsims))
         else:
-            ret = async_map(self.singleSim, range(self.nsims), self.ucpus)
+            ret = async_map(self.single_sim, range(self.nsims), self.ucpus)
 
         self.outcomes = [r[0] for r in ret]
         self.endpts = [r[1] for r in ret]
