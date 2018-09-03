@@ -172,14 +172,17 @@ def btdemonstrate(self, screen=None, timesteps=1. / 50, retpath=False, onclick=N
     else:
         maxsteps = 99999999999
 
-    if screen is None:
-        screen = pg.display.get_surface()
+    #if screen is None:
+    #    screen = pg.display.get_surface()
 
     # screen.fill(WHITE)
-    offset = (int((screen.get_width() - self.dim[0]) / 2),
-              int((screen.get_height() - self.dim[1]) / 2))
+
     # screen.blit(self.draw(),offset)
-    self.draw()
+    dsurf = self.draw()
+    if screen is not None:
+        offset = (int((screen.get_width() - self.dim[0]) / 2),
+                  int((screen.get_height() - self.dim[1]) / 2))
+        screen.blit(dsurf, offset)
     pg.display.flip()
     for event in pg.event.get():
         pass  # Flush queue
@@ -195,7 +198,9 @@ def btdemonstrate(self, screen=None, timesteps=1. / 50, retpath=False, onclick=N
             running = False
         stp += 1
         fpsstr = "FPS: " + str(clk.get_fps())
-        self.draw()
+        dsurf = self.draw()
+        if screen is not None:
+            screen.blit(dsurf, offset)
         pg.display.set_caption(fpsstr)
         self.fast_update()
         clk.tick(frrate)
@@ -210,7 +215,9 @@ def btdemonstrate(self, screen=None, timesteps=1. / 50, retpath=False, onclick=N
             running = False
 
     # if self.mostlyOcc(): return False
-    self.draw()
+    dsurf = self.draw()
+    if screen is not None:
+        screen.blit(dsurf, offset)
     pg.display.flip()
     if waitafter:
         screen_pause(0.)

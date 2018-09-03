@@ -58,7 +58,7 @@ class SimpleTable(BasicTable):
             print ("Shouldn't have multi-collision... may be errors")
         ss = [self.find_wall_by_shape(s) for s in arbiter.shapes]
         wl = [w for w in ss if w is not None][0]
-        self.on_wallhit(self.balls, w)
+        self.on_wallhit(self.balls, wl)
 
     def coll_ball_pad(self, arbiter):
         map(self.add_bounce, arbiter.shapes)
