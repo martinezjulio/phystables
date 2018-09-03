@@ -10,6 +10,7 @@ Examples:
 """
 
 from __future__ import division, print_function
+from future.builtins.misc import input
 import sys
 import os
 import warnings
@@ -320,7 +321,7 @@ class SimpleTrial(object):
         if os.path.exists(flnm) and askoverwrite:
             asking = True
             while asking:
-                ans = raw_input('File exists; overwrite? (y/n): ')
+                ans = input('File exists; overwrite? (y/n): ')
                 if ans == 'n':
                     return None
                 if ans == 'y':
@@ -336,7 +337,7 @@ class SimpleTrial(object):
         if os.path.exists(flnm) and askoverwrite:
             asking = True
             while asking:
-                ans = raw_input('File exists; overwrite? (y/n): ')
+                ans = input('File exists; overwrite? (y/n): ')
                 if ans == 'n':
                     return None
                 if ans == 'y':
