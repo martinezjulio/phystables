@@ -4,7 +4,7 @@
 
 __all__ = ['mvstdnormcdf', 'mvnormcdf', 'euclidist']
 
-from mvncdf import mvstdnormcdf, mvnormcdf
+from .mvncdf import mvstdnormcdf, mvnormcdf
 import numpy as np
 
 
