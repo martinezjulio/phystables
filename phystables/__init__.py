@@ -22,12 +22,12 @@ from .path_maker import PathMaker, load_path_maker, PseudoPathMaker
 from .trials import SimpleTrial, PongTrial, RedGreenTrial, load_trial, \
     load_pickle, load_json
 
-import objects
-import constants
-import utils
-import models
+#import objects
+#import constants
+#import utils
+#import models
 
-__all__ = ['objects', 'SimpleTable', 'BasicTable', 'NoisyTable',
+__all__ = ['SimpleTable', 'BasicTable', 'NoisyTable',
            'SimpleTrial', 'PongTrial', 'PathMaker', 'load_path_maker',
            'RedGreenTrial', 'constants', 'make_noisy', 'load_trial',
            'load_json', 'load_pickle', 'utils', 'models', 'PseudoPathMaker']

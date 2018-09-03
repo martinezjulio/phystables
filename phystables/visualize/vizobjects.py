@@ -23,7 +23,7 @@ def newballinit(self, initpos, initvel, rad, color, elast, pmsp=None,
 
 
 def balldraw(self, screen):
-    pg.draw.circle(screen, self.col, map(int, self.getpos()), self.getrad())
+    pg.draw.circle(screen, self.col, list(map(int, self.getpos())), self.getrad())
 
 
 Ball.draw = balldraw

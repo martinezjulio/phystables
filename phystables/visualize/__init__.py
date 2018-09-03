@@ -32,8 +32,8 @@ try:
                 elif e.type == MOUSEBUTTONDOWN and clickmove:
                     return False
 
-    from vizobjects import Ball, Wall, Occlusion, AbnormWall, Goal, Paddle, ptRect
-    from viztables import BasicTable, SimpleTable
+    from .vizobjects import Ball, Wall, Occlusion, AbnormWall, Goal, Paddle, ptRect
+    from .viztables import BasicTable, SimpleTable
 except ImportError:
     raise ImportError("pygame is required to import any visualizations")
 

@@ -87,7 +87,7 @@ class Ball(object):
         self.body.velocity = pm.Vec2d(initvel)
         if layer:
             if layer < 1 or layer > 31:
-                print "Layer must be between 1 and 31 - defaulting to all layers"
+                print ("Layer must be between 1 and 31 - defaulting to all layers")
             else:
                 self.circle.layers = 2**layer
         self.r = ptRect(initpos[0] - rad, initpos[1] - rad, 2 * rad, 2 * rad)
@@ -100,9 +100,9 @@ class Ball(object):
 
     def getrad(self): return int(self.circle.radius)
 
-    def getpos(self): return map(float, self.body.position)
+    def getpos(self): return list(map(float, self.body.position))
 
-    def getvel(self): return map(float, self.body.velocity)
+    def getvel(self): return list(map(float, self.body.velocity))
 
     def setvel(self, velvect): self.body.velocity = pm.Vec2d(velvect)
 

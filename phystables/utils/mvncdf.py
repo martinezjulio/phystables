@@ -9,9 +9,9 @@ a wrapper for scipy.stats.kde.mvndst
 *     This subroutine uses an algorithm given in the paper
 *     "Numerical Computation of Multivariate Normal Probabilities", in
 *     J. of Computational and Graphical Stat., 1(1992), pp. 141-149, by
-*          Alan Genz 
+*          Alan Genz
 *          Department of Mathematics
-*          Washington State University 
+*          Washington State University
 *          Pullman, WA 99164-3113
 *          Email : AlanGenz@wsu.edu
 *
@@ -29,8 +29,8 @@ a wrapper for scipy.stats.kde.mvndst
 *            coefficient in row I column J of the correlation matrix
 *            should be stored in CORREL( J + ((I-2)*(I-1))/2 ), for J < I.
 *            THe correlation matrix must be positive semidefinite.
-*     MAXPTS INTEGER, maximum number of function values allowed. This 
-*            parameter can be used to limit the time. A sensible 
+*     MAXPTS INTEGER, maximum number of function values allowed. This
+*            parameter can be used to limit the time. A sensible
 *            strategy is to start with MAXPTS = 1000*N, and then
 *            increase MAXPTS if ERROR is too large.
 *     ABSEPS REAL absolute error tolerance.
@@ -39,8 +39,8 @@ a wrapper for scipy.stats.kde.mvndst
 *     VALUE  REAL estimated value for the integral
 *     INFORM INTEGER, termination status parameter:
 *            if INFORM = 0, normal completion with ERROR < EPS;
-*            if INFORM = 1, completion with ERROR > EPS and MAXPTS 
-*                           function vaules used; increase MAXPTS to 
+*            if INFORM = 1, completion with ERROR > EPS and MAXPTS
+*                           function vaules used; increase MAXPTS to
 *                           decrease ERROR;
 *            if INFORM = 2, N > 500 or N < 1.
 *
@@ -92,7 +92,7 @@ def mvstdnormcdf(lower, upper, corrcoef, **kwds):
     This is a wrapper for scipy.stats.kde.mvn.mvndst which calculates
     a rectangular integral over a standardized multivariate normal
     distribution.
-    
+
     This function assumes standardized scale, that is the variance in each dimension
     is one, but correlation can be arbitrary, covariance = correlation matrix
 
@@ -105,8 +105,8 @@ def mvstdnormcdf(lower, upper, corrcoef, **kwds):
     corrcoef : float or array_like
        specifies correlation matrix in one of three ways, see notes
     optional keyword parameters to influence integration
-        * maxpts : int, maximum number of function values allowed. This 
-             parameter can be used to limit the time. A sensible 
+        * maxpts : int, maximum number of function values allowed. This
+             parameter can be used to limit the time. A sensible
              strategy is to start with `maxpts` = 1000*N, and then
              increase `maxpts` if ERROR is too large.
         * abseps : float absolute error tolerance.
@@ -137,7 +137,7 @@ def mvstdnormcdf(lower, upper, corrcoef, **kwds):
 
     >>> print mvstdnormcdf([-np.inf,-np.inf], [0.0,np.inf], 0.5)
     0.5
-    >>> corr = [[1.0, 0, 0.5],[0,1,0],[0.5,0,1]]    
+    >>> corr = [[1.0, 0, 0.5],[0,1,0],[0.5,0,1]]
     >>> print mvstdnormcdf([-np.inf,-np.inf,-100.0], [0.0,0.0,0.0], corr, abseps=1e-6)
     0.166666399198
     >>> print mvstdnormcdf([-np.inf,-np.inf,-100.0],[0.0,0.0,0.0],corr, abseps=1e-8)
@@ -147,7 +147,7 @@ def mvstdnormcdf(lower, upper, corrcoef, **kwds):
     >>> print mvstdnormcdf([-np.inf,-np.inf,-100.0],[0.0,0.0,0.0], corr,
                             maxpts=100000, abseps=1e-8)
     0.166666588293
-    
+
     '''
     n = len(lower)
     #don't know if converting to array is necessary,
@@ -155,13 +155,13 @@ def mvstdnormcdf(lower, upper, corrcoef, **kwds):
     lower = np.array(lower)
     upper = np.array(upper)
     corrcoef = np.array(corrcoef)
-    
+
     correl = np.zeros(n*(n-1)/2.0)  #dtype necessary?
-    
+
     if (lower.ndim != 1) or (upper.ndim != 1):
-        raise ValueError, 'can handle only 1D bounds'
+        raise ValueError('can handle only 1D bounds')
     if len(upper) != n:
-        raise ValueError, 'bounds have different lengths'
+        raise ValueError('bounds have different lengths')
     if n==2 and corrcoef.size==1:
         correl = corrcoef
         #print 'case scalar rho', n
@@ -174,7 +174,7 @@ def mvstdnormcdf(lower, upper, corrcoef, **kwds):
             for jj in range(ii):
                 correl[ jj + ((ii-2)*(ii-1))/2] = corrcoef[ii,jj]
     else:
-        raise ValueError, 'corrcoef has incorrect dimension'
+        raise ValueError('corrcoef has incorrect dimension')
 
     if not 'maxpts' in kwds:
         if n >2:
@@ -183,7 +183,7 @@ def mvstdnormcdf(lower, upper, corrcoef, **kwds):
     lowinf = np.isneginf(lower)
     uppinf = np.isposinf(upper)
     infin = 2.0*np.ones(n)
-    
+
     np.putmask(infin,lowinf,0)# infin.putmask(0,lowinf)
     np.putmask(infin,uppinf,1) #infin.putmask(1,uppinf)
     #this has to be last
@@ -192,13 +192,13 @@ def mvstdnormcdf(lower, upper, corrcoef, **kwds):
 ##    #remove infs
 ##    np.putmask(lower,lowinf,-100)# infin.putmask(0,lowinf)
 ##    np.putmask(upper,uppinf,100) #infin.putmask(1,uppinf)
-    
+
     #print lower,',',upper,',',infin,',',correl
     #print correl.shape
     #print kwds.items()
     error, cdfvalue, inform = scipy.stats.kde.mvn.mvndst(lower,upper,infin,correl,**kwds)
     if inform:
-        print 'something wrong', informcode[inform], error
+        print ('something wrong', informcode[inform], error)
     if cdfvalue <= 0: cdfvalue = 1e-100
     return cdfvalue
 
@@ -208,7 +208,7 @@ def mvnormcdf(lower, upper, mu, cov, **kwds):
 
     This is a wrapper for scipy.stats.kde.mvn.mvndst which calculates
     a rectangular integral over a multivariate normal distribution.
-    
+
     Parameters
     ----------
     lower, upper : array_like, 1d
@@ -220,8 +220,8 @@ def mvnormcdf(lower, upper, mu, cov, **kwds):
     cov : array_like, 2d
        specifies covariance matrix
     optional keyword parameters to influence integration
-        * maxpts : int, maximum number of function values allowed. This 
-             parameter can be used to limit the time. A sensible 
+        * maxpts : int, maximum number of function values allowed. This
+             parameter can be used to limit the time. A sensible
              strategy is to start with `maxpts` = 1000*N, and then
              increase `maxpts` if ERROR is too large.
         * abseps : float absolute error tolerance.
@@ -242,7 +242,7 @@ def mvnormcdf(lower, upper, mu, cov, **kwds):
     --------
     mvstdnormcdf : location and scale standardized multivariate normal cdf
     '''
-    
+
     lower = np.array(lower)
     upper = np.array(upper)
     cov = np.array(cov)
@@ -260,19 +260,19 @@ def mvnormcdf(lower, upper, mu, cov, **kwds):
 
 '''
 
-lower,upper,corrcoef = [0.0,0.0],[1.0,1.0],[0.99]        
+lower,upper,corrcoef = [0.0,0.0],[1.0,1.0],[0.99]
 print mvstdnormcdf(lower,upper,corrcoef)
-lower,upper,corrcoef = [-np.inf,0.0],[0.0,1.0],[0.0]        
-print mvstdnormcdf(lower,upper,corrcoef) 
-lower,upper,corrcoef = [-np.inf,0.0],[np.inf,1.0],[0.0]        
-print mvstdnormcdf(lower,upper,corrcoef) 
+lower,upper,corrcoef = [-np.inf,0.0],[0.0,1.0],[0.0]
+print mvstdnormcdf(lower,upper,corrcoef)
+lower,upper,corrcoef = [-np.inf,0.0],[np.inf,1.0],[0.0]
+print mvstdnormcdf(lower,upper,corrcoef)
 print mvstdnormcdf([-np.inf,-np.inf],[np.inf,0.0],[0.0] )
 print mvstdnormcdf([-np.inf,-np.inf],[0.0,0.0],[0.0] )
-print mvstdnormcdf([-10.0,-10.0],[0.0,10.0],[0.0] ) 
+print mvstdnormcdf([-10.0,-10.0],[0.0,10.0],[0.0] )
 print mvstdnormcdf([-np.inf,-np.inf],[np.inf,np.inf],[0.0] )
 print mvstdnormcdf([-np.inf,-np.inf],[0.0,0.0],[0.5] )
 print mvstdnormcdf([-np.inf,-np.inf],[0.0,0.0],[0.9999] )
-corr = [[1.0, 0, 0.5],[0,1,0],[0.5,0,1]]           
+corr = [[1.0, 0, 0.5],[0,1,0],[0.5,0,1]]
 print mvstdnormcdf([-np.inf,-np.inf,-np.inf],[0.0,0.0,0.0],corr )
 print mvstdnormcdf([-np.inf,-np.inf,-1.0],[0.0,0.0,0.0],corr )
 # using optional keywords for integration
@@ -280,7 +280,7 @@ print mvstdnormcdf([-np.inf,-np.inf,-100.0],[0.0,0.0,0.0],corr, releps=1e-4)
 print mvstdnormcdf([-np.inf,-np.inf,-100.0],[0.0,0.0,0.0],corr, abseps=1e-8)
 print mvstdnormcdf([-np.inf,-np.inf,-100.0],[0.0,0.0,0.0],corr, maxpts=100000, abseps=1e-8)
 corr = [[1.0, 0, 0.9],[0,1,0.5],[0.9,0.5,1]]
-print mvstdnormcdf([-np.inf,-np.inf,-100.0],[0.0,0.0,0.0],corr ) 
+print mvstdnormcdf([-np.inf,-np.inf,-100.0],[0.0,0.0,0.0],corr )
 corr = np.diag(np.ones(3))
 print mvstdnormcdf([-np.inf,-np.inf,-100.0],[0.0,0.0,0.0],corr )
 

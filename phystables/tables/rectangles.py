@@ -100,6 +100,6 @@ def unique_occs(occs, walls=[]):
     # Test code - check for overlaps
     for i in range(len(uos)):
         if uos[i].collidelist(uos[:i] + uos[i + 1:]) != -1:
-            print uos
+            print (uos)
             raise RuntimeError("FOUND COLLLISION!!!")
     return uos

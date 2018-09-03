@@ -11,8 +11,8 @@ Examples:
 from __future__ import division, print_function
 import sys
 import os
-from simple_table import *
-from basic_table import *
+from .simple_table import *
+from .basic_table import *
 from ..objects import *
 import random
 import numpy as np

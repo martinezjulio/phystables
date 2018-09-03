@@ -10,7 +10,7 @@ Changes from BasicTable:
 """
 
 from __future__ import division, print_function
-from basic_table import *
+from .basic_table import *
 from ..objects import *
 
 

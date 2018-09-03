@@ -97,7 +97,7 @@ class RGButton(object):
         elif newicon == 'rgoal': self.icon = irgoal
         elif newicon == 'wall': self.icon = iwall
         elif newicon == 'occ': self.icon = iocc
-        else: print "Icon not found"; return False
+        else: print ("Icon not found"); return False
         return True
 
 

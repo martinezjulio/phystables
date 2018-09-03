@@ -53,7 +53,7 @@ def get_const(key):
                       (10, 'SHAPE_RECT'), (11, 'SHAPE_BALL'),
                       (12, 'SHAPE_POLY')])
     if key not in constants.keys():
-        print "Unknown constant type:", key; return None
+        print ("Unknown constant type:", key); return None
     return constants[key]
 
 

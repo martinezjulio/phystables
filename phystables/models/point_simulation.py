@@ -101,7 +101,7 @@ class PointSimulation(object):
             return None
 
         if printout:
-            print "Resimulating", len(idxs), "times"
+            print ("Resimulating", len(idxs), "times")
 
         ret = async_map(self.single_sim, range(len(idxs)), self.ucpus)
         for i in range(len(idxs)):

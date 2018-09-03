@@ -14,7 +14,7 @@ import math
 from ..constants import *
 from ..objects import *
 import numpy as np
-from rectangles import *
+from .rectangles import *
 import subprocess
 import os
 import sys

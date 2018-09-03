@@ -102,7 +102,7 @@ def btstep(self, t=1 / 50., maxtime=None):
     # Check for offsets in substeps, tolerant to rounding errors
     isubs = int(np.floor(substeps + 1e-7))
     if abs(substeps - isubs) > 1e-6:
-        print "Warning: steps not evenly divisible - off by", (substeps - isubs)
+        print ("Warning: steps not evenly divisible - off by", (substeps - isubs))
     if self.paddle and pg.mouse.get_focused():
         self.paddle.update(self.get_relative_mouse_pos())
         # print any([sh == self.paddle.seg for sh in self.sp.shapes])
@@ -142,14 +142,14 @@ def btadd_paddle(self, p1, p2, padlen=None, padwid=3, hitret=None, active=True, 
     else:
         sta = None
     if p1 == p2:
-        print "Paddle endpoints must not overlap:", p1, p2; return None
+        print ("Paddle endpoints must not overlap:", p1, p2); return None
     if p1[0] != p2[0] and p1[1] != p2[1]:
-        print "Paddle must be horizontal or vertical", p1, p2
+        print ("Paddle must be horizontal or vertical", p1, p2)
         return None
     if padlen is None:
         padlen = self.dpadlen
     if self.paddle is not None and not suppressoverwrite:
-        print "Warning! Overwriting old paddle"
+        print ("Warning! Overwriting old paddle")
     self.paddle = Paddle(p1, p2, padlen, acol, iacol, pthcol, padwid,
                          hitret, sta, elast, self.sp.static_body, pmsp)
     return self.paddle
@@ -262,7 +262,7 @@ def btmake_movie(self, moviename, outputdir='.', fps=20, removeframes=True, maxt
     ffcall = 'ffmpeg -y -r ' + str(fps) + ' -i ' + tnmbase + \
         ' -pix_fmt yuv420p ' + os.path.join(outputdir, moviename + '.mov')
     ffargs = shlex.split(ffcall)
-    print ffargs
+    print (ffargs)
     subprocess.call(ffargs)
 
     if removeframes:

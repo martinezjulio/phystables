@@ -8,7 +8,7 @@
 
 from __future__ import division, print_function
 import numpy as np
-import cPickle as pickle
+import pickle
 from .constants import *
 from .trials import *
 from .tables import SimpleTable, NoisyTable

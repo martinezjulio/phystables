@@ -15,7 +15,7 @@ import os
 import warnings
 from .tables import *
 from .constants import *
-import cPickle as pickle
+import pickle
 from math import sqrt
 import json
 
