@@ -19,6 +19,7 @@ from .constants import *
 import pickle
 from math import sqrt
 import json
+import numpy as np
 
 __all__ = ['SimpleTrial', 'RedGreenTrial', 'PongTrial', 'load_trial',
            'load_json', 'load_pickle']
@@ -29,6 +30,25 @@ def _safe_listify(tolist):
         return [_safe_listify(l) for l in tolist]
     else:
         return tolist
+
+def _unnumpy(tolist):
+    """Removes numpy types from items in a list"""
+    if hasattr(tolist, '__iter__') or type(tolist).__name__ == 'Color':
+        return [_unnumpy(l) for l in tolist]
+    else:
+        if type(tolist).__module__ == 'numpy':
+            return tolist.item()
+        else:
+            return tolist
+
+
+# Solution to making sure np objects can be serialized
+# From https://stackoverflow.com/questions/26646362/numpy-array-is-not-json-serializable
+class NumpyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return json.JSONEncoder.default(self, obj)
 
 
 class SimpleTrial(object):
@@ -342,23 +362,23 @@ class SimpleTrial(object):
                     return None
                 if ans == 'y':
                     asking = False
-
         jdict = {'Name': self.name,
                  'Dims': self.dims,
                  'ClosedEnds': self.ce,
-                 'BKColor': _safe_listify(self.bkc),
-                 'Ball': _safe_listify(self.ball),
-                 'Walls': _safe_listify(self.normwalls),
-                 'AbnormWalls': _safe_listify(self.abnormwalls),
-                 'Occluders': _safe_listify(self.occs),
-                 'Paddle': _safe_listify(self.paddle),
-                 'Goals': _safe_listify(self.goals)}
+                 'BKColor': _unnumpy(self.bkc),
+                 'Ball': _unnumpy(self.ball),
+                 'Walls': _unnumpy(self.normwalls),
+                 'AbnormWalls': _unnumpy(self.abnormwalls),
+                 'Occluders': _unnumpy(self.occs),
+                 'Paddle': _unnumpy(self.paddle),
+                 'Goals': _unnumpy(self.goals)}
 
         if pretty:
-            jfl = json.dumps(jdict, separators=(
-                ',', ': '), sort_keys=True, indent=2)
+            jfl = json.dumps(jdict, separators=(',', ': '),
+                             sort_keys=True, indent=2,
+                             cls=NumpyEncoder)
         else:
-            jfl = json.dumps(jdict)
+            jfl = json.dumps(jdict, cls=NumpyEncoder)
         ofl = open(flnm, 'w')
         ofl.write(jfl)
         ofl.close()
