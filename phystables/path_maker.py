@@ -176,7 +176,7 @@ class PathMaker(object):
 
     def make_path_sing_time(self,t,verbose = False):
         tab = self.trial.makeTable()
-        while tab.tm < t:
+        while tab.tm < (t - 1e-8): # Adjustment for rounding errors
             tab.step(self.pdist)
         return map(lambda x: Path(tab,self.kv,self.kb,self.km,self.pe,self.time,self.res,verbose=verbose,\
                                   allow_timeout=self.timeout, constrained_bounce=self.cons_bounce,
