@@ -14,6 +14,7 @@ import os
 from .simple_table import *
 from .basic_table import *
 from ..objects import *
+from ..utils import *
 import random
 import numpy as np
 import pymunk as pm
@@ -60,7 +61,7 @@ class NoisyTable(SimpleTable):
                 # Check that the ball isn't stuck in walls or on a goal
                 brect = ball.getboundrect()
                 for w in self.walls:
-                    if brect.colliderect(w.r):
+                    if brect.colliderect(w.get_bound_rect()):
                         setting = True
                 for g in self.goals:
                     if brect.colliderect(g.r):
@@ -154,8 +155,9 @@ class NoisyMultiTable(BasicTable):
                 # Check that the ball isn't stuck in walls or on a goal
                 brect = ball.getboundrect()
                 for w in self.walls:
-                    if brect.colliderect(w.r):
+                    if brect.colliderect(w.get_bound_rect()):
                         setting = True
+
                 for g in self.goals:
                     if brect.colliderect(g.r):
                         setting = True
@@ -208,7 +210,8 @@ def make_noisy(table, kapv=KAPV_DEF, kapb=KAPB_DEF, kapm=KAPM_DEF,
     ntab.set_timestep(table.basicts)
     for w in table.walls:
         if isinstance(w, AbnormWall):
-            ntab.add_abnorm_wall(w.poly.get_vertices(), w.col, w.poly.elasticity)
+            ntab.add_abnorm_wall(safe_winding_vertices(w.poly.get_vertices()),
+                                 w.col, w.poly.elasticity)
         elif isinstance(w, Wall):
             ntab.add_wall(w.r.topleft, w.r.bottomright, w.col, w.poly.elasticity)
 

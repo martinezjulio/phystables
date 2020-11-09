@@ -13,6 +13,7 @@ import random
 import math
 from ..constants import *
 from ..objects import *
+from ..utils import *
 import numpy as np
 from .rectangles import *
 import subprocess
@@ -85,35 +86,6 @@ def ball_rect_collision(ball, rect):
     else:
         return False
 
-
-def check_counterclockwise(pointlist):
-    """Checks if a series of vertices is counterclockwise-winding
-
-    Args:
-        pointlist (list): A list of (x,y) vertices
-
-    Returns:
-        Boolean indicating whether the vertices are counterclockwise-winding
-    """
-    pointlist = [(p[0], p[1]) for p in pointlist]
-    if len(pointlist) < 3:
-        return True
-    a = np.array(pointlist[0])
-    b = np.array(pointlist[1])
-    for i in range(2, len(pointlist)):
-        c = np.array(pointlist[i])
-        l1 = b - a
-        l2 = c - b
-        if np.cross(l1, l2) > 0:
-            return False
-        a = b
-        b = c
-    c = np.array(pointlist[0])
-    l1 = b - a
-    l2 = c - b
-    if np.cross(l1, l2) > 0:
-        return False
-    return True
 
 
 class BasicTable(object):
@@ -231,7 +203,7 @@ class BasicTable(object):
             print ("Shouldn't have multi-collision... may be errors")
         ss = [self.find_wall_by_shape(s) for s in arbiter.shapes]
         wl = [w for w in ss if w is not None][0]
-        self.on_wallhit([b for b in self.balls if b.circle in arbiter.shapes][0], w)
+        self.on_wallhit([b for b in self.balls if b.circle in arbiter.shapes][0], wl)
 
     def coll_ball_pad(self, arbiter):
         map(self.add_bounce, arbiter.shapes)

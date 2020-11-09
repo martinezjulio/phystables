@@ -147,6 +147,9 @@ class Wall(object):
     def to_str(self):
         return "Wall object - ul: " + str(self.r.topleft) + "; lr: " + str(self.r.bottomright)
 
+    def get_bound_rect(self):
+        return self.r
+
 
 class Occlusion(object):
     def __init__(self, upperleft, lowerright, color):
@@ -193,6 +196,11 @@ class AbnormWall(Wall):
         left = bb.left
         width = bb.right - bb.left
         return ptRect(left, top, width, height)
+
+    def collides(self, other_shape):
+        cps = self.poly.shapes_collide(other_shape)
+        import pdb; pdb.set_trace()
+        return cps
 
 
 class Paddle(object):
