@@ -63,12 +63,6 @@ if __name__ == '__main__':
         table.add_abnorm_wall([(300,300),(300,400),(400,300),(400,200),(350,200)])
         table.add_goal((700,300),(800,400),SUCCESS,RED)
         table.add_goal((0,300),(100,400),SUCCESS, GREEN)
-
-        for w in table.walls:
-            from phystables.objects import *
-            if isinstance(w, AbnormWall):
-                print (w.poly.get_vertices())
-
         while True:
             noise = make_noisy(table)
             noise.set_timestep(1/100.)

@@ -16,7 +16,7 @@ class wx_smart_install_data(distutils.command.install_data.install_data):
 
 
 setup(name = 'phystables',
-      version = '0.6',
+      version = '0.7',
       description = '2-D physics tables for intuitive physics psychology experiments',
       author = 'Kevin A Smith',
       author_email = 'k2smith@mit.edu',
