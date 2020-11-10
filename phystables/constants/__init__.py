@@ -52,7 +52,7 @@ def get_const(key):
                       (1004, 'COLLTYPE_PAD'),
                       (10, 'SHAPE_RECT'), (11, 'SHAPE_BALL'),
                       (12, 'SHAPE_POLY')])
-    if key not in constants.keys():
+    if key not in list(constants.keys()):
         print ("Unknown constant type:", key); return None
     return constants[key]
 
