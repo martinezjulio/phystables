@@ -173,7 +173,10 @@ class NoisyMultiTable(BasicTable):
             ball.setvel((vmag * np.cos(newang), vmag * np.sin(newang)))
 
     def on_wallhit(self, ball, wall):
-        self.jitter_ball(ball, self.kapb)
+        if self.cons_bounce:
+            self.wall_collide(ball, wall, self.kapb)
+        else:
+            self.jitter_ball(ball, self.kapb)
 
     def on_ballhit(self, ballist):
         for b in ballist:
