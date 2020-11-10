@@ -38,10 +38,10 @@ class NoisyTable(SimpleTable):
         self.perr = perr
         self.cons_bounce = constrained_bounce
         self.cons_move = constrained_move
-        super(NoisyTable, self).__init__(dims, *args, **kwds)
+        super().__init__(dims, *args, **kwds)
 
     def __del__(self):
-        super(NoisyTable, self).__del__()
+        super().__del__()
 
     def jitter_ball(self, ball, kappa=None, posjitter=None):
         if posjitter:
@@ -126,16 +126,20 @@ class NoisyTable(SimpleTable):
 
 class NoisyMultiTable(BasicTable):
 
-    def __init__(self, dims, kapv=KAPV_DEF, kapb=KAPB_DEF, kapm=KAPM_DEF, perr=PERR_DEF, *args, **kwds):
+    def __init__(self, dims, kapv=KAPV_DEF, kapb=KAPB_DEF, kapm=KAPM_DEF,
+                 perr=PERR_DEF, constrained_bounce=False,
+                 constrained_move=False, *args, **kwds):
 
         self.kapv = kapv
         self.kapb = kapb
         self.kapm = kapm
         self.perr = perr
-        super(NoisyMultiTable, self).__init__(dims, *args, **kwds)
+        self.cons_bounce = constrained_bounce
+        self.cons_move = constrained_move
+        super().__init__(dims, *args, **kwds)
 
     def __del__(self):
-        super(NoisyMultiTable, self).__del__()
+        super().__del__()
 
     def jitter_ball(self, ball, kappa=None, posjitter=None):
         if posjitter:
