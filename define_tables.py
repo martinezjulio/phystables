@@ -30,6 +30,7 @@ class TableData:
 
         
 if __name__ == "__main__":
+    tables = []
     # table 0
     walls = [WallData(upperleft=(200, 150), lowerright=(500,250)),
              WallData(upperleft=(450, 400), lowerright=(550,600)),
@@ -43,7 +44,7 @@ if __name__ == "__main__":
              BallData(initpos=(250, 100), initvel=(300, 300), color=GOLD)]
     
     tableDims = (1000,600)
-    tables = [TableData(tableDims, walls, goals, balls)]
+    #tables.append(TableData(tableDims, walls, goals, balls))
 
     # table 1
     walls = [WallData(upperleft=(175,350), lowerright=(225,600)),
@@ -58,7 +59,7 @@ if __name__ == "__main__":
              BallData(initpos=(700, 150), initvel=(300, 300), color=GOLD)]
     
     tableDims = (1000,600)
-    tables.append(TableData(tableDims, walls, goals, balls))
+    #tables.append(TableData(tableDims, walls, goals, balls))
 
     # table 2
     walls = [WallData(upperleft=(350,0), lowerright=(400,250)),
@@ -73,14 +74,14 @@ if __name__ == "__main__":
              BallData(initpos=(650, 200), initvel=(300, 300), color=GOLD)]
     
     tableDims = (1000,600)
-    tables.append(TableData(tableDims, walls, goals, balls))
+    #tables.append(TableData(tableDims, walls, goals, balls))
 
     # table 3
     goals = [GoalData(upperleft=(300,275), lowerright=(500,325), onreturn=REDGOAL, color=RED),
              GoalData(upperleft=(500,275), lowerright=(700,325), onreturn=GREENGOAL, color=GREEN)]
 
-    balls = [BallData(initpos=(600,50), initvel=(0,-200), color=PURPLE),
-             BallData(initpos=(450,550), initvel=(0,200), color=GOLD)]
+    balls = [BallData(initpos=(600,200), initvel=(-50,-300), color=PURPLE),
+             BallData(initpos=(450,400), initvel=(50,300), color=GOLD)]
 
     tableDims = (1000,600)
     tables.append(TableData(tableDims, [], goals, balls))
