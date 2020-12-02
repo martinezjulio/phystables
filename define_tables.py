@@ -79,8 +79,8 @@ if __name__ == "__main__":
     goals = [GoalData(upperleft=(300,275), lowerright=(500,325), onreturn=REDGOAL, color=RED),
              GoalData(upperleft=(500,275), lowerright=(700,325), onreturn=GREENGOAL, color=GREEN)]
 
-    balls = [BallData(initpos=(600,50), initvel=(0,100), color=PURPLE),
-             BallData(initpos=(450,550), initvel=(0,-100), color=GOLD)]
+    balls = [BallData(initpos=(600,50), initvel=(0,-200), color=PURPLE),
+             BallData(initpos=(450,550), initvel=(0,200), color=GOLD)]
 
     tableDims = (1000,600)
     tables.append(TableData(tableDims, [], goals, balls))
